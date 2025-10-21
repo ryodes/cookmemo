@@ -1,4 +1,5 @@
 import axios from "axios";
+import { enqueueSnackbar } from "notistack";
 
 let accessToken = null;
 
@@ -31,7 +32,11 @@ api.interceptors.response.use(
         error.config.headers.Authorization = `Bearer ${newToken}`;
         return axios(error.config); // 🔄 rejoue la requête originale
       } catch (refreshError) {
-        alert("Session expiré, veuillez-vous reconnectrer");
+        enqueueSnackbar("Session expiré, veuillez-vous reconnectrer.", {
+          autoHideDuration: 3000,
+          variant: "warning",
+          anchorOrigin: { horizontal: "right", vertical: "top" },
+        });
         console.error("Impossible de rafraîchir le token :", refreshError);
       }
     }

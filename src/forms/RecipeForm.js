@@ -4,6 +4,7 @@ import { Slider } from "@mui/material";
 import InputIngredient from "components/InputIngredient";
 import ImageListComponent from "components/ImageListComponent";
 import { postRecipe } from "features/user/usersSlice";
+import { enqueueSnackbar } from "notistack";
 
 export default function DynamicForm() {
   const dispatch = useDispatch();
@@ -62,7 +63,11 @@ export default function DynamicForm() {
         nbPart
       )
     );
-    alert("Recette créée");
+    enqueueSnackbar("Recette créée.", {
+      autoHideDuration: 3000,
+      variant: "success",
+      anchorOrigin: { horizontal: "right", vertical: "top" },
+    });
     setTitle("");
     setImageChoosed(null);
     setIngredients([""]);

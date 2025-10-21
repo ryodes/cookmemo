@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import EmptyRecipe from "components/EmptyRecipe";
 import RecipdesDashboard from "components/RecipesDashboard";
 import { getRecipes } from "features/recipes/recipesSlice";
+import LoadingSpinner from "components/LoadingSpinner";
 
 function Home() {
   const dispatch = useDispatch();
-  const { recipes } = useSelector((state) => state.recipes);
+  const { recipes, loading } = useSelector((state) => state.recipes);
+
+  console.log(loading);
 
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold">Bienvenue dans la cuisine de tous</h1>
@@ -19,7 +23,9 @@ function Home() {
         Découvrez les plats des autres passionnés et laissez-vous inspirer pour
         créer les vôtres.
       </p>
-      {recipes.length > 0 ? (
+      {loading ? (
+        <LoadingSpinner />
+      ) : recipes.length > 0 ? (
         <RecipdesDashboard recipes={recipes} />
       ) : (
         <EmptyRecipe />
