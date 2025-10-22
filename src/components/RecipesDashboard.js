@@ -6,6 +6,10 @@ import CardRecipe from "components/CardRecipe";
 export default function RecipdesDashboard({ recipes }) {
   const navigate = useNavigate();
 
+  const sortedRecipes = [...recipes].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+
   return (
     <div>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -28,7 +32,7 @@ export default function RecipdesDashboard({ recipes }) {
           justifyContent: "center",
         }}
       >
-        {recipes.map((recipe, index) => (
+        {sortedRecipes.map((recipe, index) => (
           <Grid key={index} sx={{ maxWidth: "240px" }}>
             <CardRecipe recipe={recipe} />
           </Grid>

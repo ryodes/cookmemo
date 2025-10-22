@@ -10,8 +10,6 @@ function Recipe() {
   const { recipes, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  console.log(loading);
-
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);

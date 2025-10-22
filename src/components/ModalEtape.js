@@ -6,7 +6,7 @@ import { closeModal } from "features/recipes/recipesSlice";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function StepByStepModal() {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState("next");
   const dispatch = useDispatch();
 
@@ -24,7 +24,6 @@ export default function StepByStepModal() {
   const nextStep = () => {
     setDirection("next");
     setCurrentStep((next) => {
-      console.log(next, Math.min(next + 1, steps.length - 1));
       return Math.min(next + 1, steps.length - 1);
     });
   };
@@ -32,7 +31,6 @@ export default function StepByStepModal() {
   const prevStep = () => {
     setDirection("prev");
     setCurrentStep((prev) => {
-      console.log(prev, Math.max(prev - 1, 0));
       return Math.max(prev - 1, 0);
     });
   };

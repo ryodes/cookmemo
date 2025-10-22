@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Slider } from "@mui/material";
 import InputIngredient from "components/InputIngredient";
 import ImageListComponent from "components/ImageListComponent";
@@ -13,6 +14,7 @@ export default function DynamicForm() {
   const [ingredients, setIngredients] = useState([""]);
   const [nbPart, setNbPart] = useState(4);
   const [steps, setSteps] = useState([]);
+  const navigate = useNavigate();
 
   const addIngredient = () => {
     setIngredients([...ingredients, ""]);
@@ -73,6 +75,7 @@ export default function DynamicForm() {
     setIngredients([""]);
     setNbPart(4);
     setSteps([]);
+    navigate("/recipes");
   };
 
   return (

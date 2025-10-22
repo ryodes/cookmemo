@@ -10,14 +10,26 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useAuth } from "context/AuthContext";
+import { enqueueSnackbar } from "notistack";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!emailRegex.test(email)) {
+      enqueueSnackbar("Veuillez entrer une adresse email valide.", {
+        autoHideDuration: 3000,
+        variant: "warning",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
+      return;
+    }
+
     await login(email, password);
   };
 
@@ -39,7 +51,7 @@ export default function Login() {
           </Typography>
           <Typography component="p" variant="p">
             <b>Connectez-vous</b> ou <b>créez un compte</b> en un{" "}
-            <b>seul geste</b> : il suffit de renseigner votre e-mail et votre
+            <b>seul geste</b> : il suffit de renseigner votre e-mail et un
             mot de passe, et nous nous occupons du reste !
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
@@ -54,6 +66,12 @@ export default function Login() {
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              error={email !== "" && !emailRegex.test(email)}
+              helperText={
+                email !== "" && !emailRegex.test(email)
+                  ? "Adresse email invalide"
+                  : ""
+              }
             />
             <TextField
               margin="normal"
