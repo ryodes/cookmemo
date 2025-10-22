@@ -95,7 +95,7 @@ export default function StepByStepModal() {
             <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
               {steps[currentStep]}
             </p>
-            <p className="text-gray-400 mt-3">Ingredients:</p>
+            <u className="text-gray-400 mt-3">Ingredients:</u>
             <ul>
               {ingredients.map((ingredient, index) => (
                 <li key={index} className="text-gray-400">

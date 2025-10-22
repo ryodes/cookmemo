@@ -37,6 +37,11 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Connexion
           </Typography>
+          <Typography component="p" variant="p">
+            <b>Connectez-vous</b> ou <b>créez un compte</b> en un{" "}
+            <b>seul geste</b> : il suffit de renseigner votre e-mail et votre
+            mot de passe, et nous nous occupons du reste !
+          </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             <TextField
               margin="normal"
