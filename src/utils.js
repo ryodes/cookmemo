@@ -38,6 +38,6 @@ export function colorBadge(email) {
   const secondLetter = initial.charAt(1);
   const num1 = letterToNumber(firstLetter);
   const num2 = letterToNumber(secondLetter);
-  const color = colors[num1];
+  const color = colors[num1 - 1];
   return color[num2 * 100];
 }

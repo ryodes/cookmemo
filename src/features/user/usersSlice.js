@@ -1,4 +1,3 @@
-import { Alert } from "@mui/material";
 import { createSlice } from "@reduxjs/toolkit";
 import api, { setAccessToken } from "app/api";
 import { enqueueSnackbar } from "notistack";
@@ -98,9 +97,17 @@ export const postUsers = (email, password) => async (dispatch) => {
     return response.data;
   } catch (error) {
     if (error.response?.status === 401) {
-      <Alert severity="warning">Mot de passe incorrect.</Alert>;
+      enqueueSnackbar("Mot de passe incorrect.", {
+        autoHideDuration: 3000,
+        variant: "warning",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
     } else {
-      <Alert severity="error">Une erreur est survenue, réessayez.</Alert>;
+      enqueueSnackbar("Mot de passe incorrect.", {
+        autoHideDuration: 3000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
     }
     console.error("Erreur lors du login:", error);
     dispatch(

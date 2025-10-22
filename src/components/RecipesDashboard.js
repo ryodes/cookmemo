@@ -29,7 +29,7 @@ export default function RecipdesDashboard({ recipes }) {
         }}
       >
         {recipes.map((recipe, index) => (
-          <Grid key={index}>
+          <Grid key={index} sx={{ maxWidth: "240px" }}>
             <CardRecipe recipe={recipe} />
           </Grid>
         ))}

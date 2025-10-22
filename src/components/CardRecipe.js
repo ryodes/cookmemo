@@ -8,7 +8,6 @@ import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -72,7 +71,7 @@ export default function CardRecipe({ recipe }) {
           <Tooltip title="Démarrer">
             <IconButton
               aria-label="settings"
-              onClick={() => dispatch(openModal(steps))}
+              onClick={() => dispatch(openModal({ steps, ingredients, title }))}
             >
               <CallMissedOutgoingIcon />
             </IconButton>
@@ -80,6 +79,7 @@ export default function CardRecipe({ recipe }) {
         }
         title={title}
         subheader={formattedDate}
+        sx={{ maxHeight: "73px" }}
       />
       <CardMedia
         component="img"
@@ -105,22 +105,22 @@ export default function CardRecipe({ recipe }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {ingredients.map((ingredient, index) => (
-            <Typography
-              key={index}
-              variant="body2"
-              sx={{ color: "text.secondary" }}
-            >
-              {ingredient}
-            </Typography>
-          ))}
+          <ul className="list-disc pl-6 space-y-2">
+            {ingredients.map((ingredient, index) => (
+              <li key={index} className="text-gray-500">
+                {ingredient}
+              </li>
+            ))}
+          </ul>
         </CardContent>
         <CardContent>
-          {steps.map((step, index) => (
-            <Typography key={index} sx={{ marginBottom: 0 }}>
-              {step}
-            </Typography>
-          ))}
+          <ul className="list-disc pl-6 space-y-2">
+            {steps.map((step, index) => (
+              <li key={index} className="text-gray-800">
+                {step}
+              </li>
+            ))}
+          </ul>
         </CardContent>
       </Collapse>
     </Card>

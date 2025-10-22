@@ -9,8 +9,6 @@ function Home() {
   const dispatch = useDispatch();
   const { recipes, loading } = useSelector((state) => state.recipes);
 
-  console.log(loading);
-
   useEffect(() => {
     dispatch(getRecipes());
   }, [dispatch]);
