@@ -103,11 +103,14 @@ export const postUsers = (email, password) => async (dispatch) => {
         anchorOrigin: { horizontal: "right", vertical: "top" },
       });
     } else {
-      enqueueSnackbar("Mot de passe incorrect.", {
-        autoHideDuration: 3000,
-        variant: "error",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
-      });
+      enqueueSnackbar(
+        "Une erreur est survenu, veuillez réessayer ultérieurement.",
+        {
+          autoHideDuration: 3000,
+          variant: "error",
+          anchorOrigin: { horizontal: "right", vertical: "top" },
+        }
+      );
     }
     console.error("Erreur lors du login:", error);
     dispatch(
