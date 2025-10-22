@@ -1,6 +1,7 @@
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 
+// eslint-disable-next-line
 let accessToken = null;
 
 export const setAccessToken = (token) => {
