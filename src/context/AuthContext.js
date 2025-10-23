@@ -4,6 +4,14 @@ import { useDispatch } from "react-redux";
 import { postUsers } from "features/user/usersSlice";
 import { setAccessToken } from "app/api";
 
+let logoutCallback = null;
+export const setLogoutCallback = (callback) => {
+  logoutCallback = callback;
+};
+export const triggerLogout = () => {
+  if (logoutCallback) logoutCallback();
+};
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -31,6 +39,10 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     setAccessToken(null);
   };
+
+  useEffect(() => {
+    setLogoutCallback(() => logout);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

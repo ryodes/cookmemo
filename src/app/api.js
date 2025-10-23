@@ -1,5 +1,6 @@
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import { triggerLogout } from "context/AuthContext";
 
 // eslint-disable-next-line
 let accessToken = null;
@@ -10,10 +11,9 @@ export const setAccessToken = (token) => {
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  withCredentials: true, // (refresh_token)
+  withCredentials: true,
 });
 
-// Interceptor pour ajouter le token
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -29,9 +29,9 @@ api.interceptors.response.use(
           { withCredentials: true }
         );
         const newToken = refreshResponse.data.access_token;
-        setAccessToken(newToken); // 👈 tu réutilises ta fonction globale
+        setAccessToken(newToken);
         error.config.headers.Authorization = `Bearer ${newToken}`;
-        return axios(error.config); // 🔄 rejoue la requête originale
+        return axios(error.config);
       } catch (refreshError) {
         enqueueSnackbar("Session expiré, veuillez-vous reconnectrer.", {
           autoHideDuration: 3000,
@@ -39,6 +39,7 @@ api.interceptors.response.use(
           anchorOrigin: { horizontal: "right", vertical: "top" },
         });
         console.error("Impossible de rafraîchir le token :", refreshError);
+        triggerLogout();
       }
     }
     return Promise.reject(error);

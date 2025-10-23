@@ -66,6 +66,6 @@ export const getRecipes = () => async (dispatch) => {
     dispatch(
       getRecipeError(error.message || "Erreur lors du chargement des recettes")
     );
-    console.error("Erreur lors de l'ajout:", error);
+    console.error("Erreur lors du chargement des recettes", error);
   }
 };

@@ -134,7 +134,7 @@ export const getRecipes = () => async (dispatch) => {
     dispatch(getRecipesSuccess(response.data.recipes));
     return response.data;
   } catch (error) {
-    console.error("Erreur lors de l'ajout:", error);
+    console.error("Erreur lors du chargement des recettes.", error);
     dispatch(
       getError(error.message || "Erreur lors du chargement des recettes")
     );
@@ -160,6 +160,10 @@ export const postRecipe =
       return response.data;
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
-      // return rejectWithValue(error.response?.data?.msg || "Erreur inconnue");
+      enqueueSnackbar("Erreur lors de l'ajout.", {
+        autoHideDuration: 3000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
     }
   };
