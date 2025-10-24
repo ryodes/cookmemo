@@ -90,7 +90,7 @@ export default function StepByStepModal() {
             <h2 className="text-2xl font-semibold mb-2">
               Étape {currentStep + 1} sur {steps.length}
             </h2>
-            <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto max-w-[80%]">
               {steps[currentStep]}
             </p>
             <u className="text-gray-400 mt-3">Ingredients:</u>
