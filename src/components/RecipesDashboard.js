@@ -14,13 +14,21 @@ export default function RecipdesDashboard({ recipes }) {
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
 
-  const sortedRecipesFiltred = sortedRecipes.filter((recipe) => {
-    if (query === "") {
-      return recipe;
-    }
-    return recipe.title.includes(query);
-  });
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9 ]/g, "");
 
+  const sortedRecipesFiltered = sortedRecipes.filter((recipe) => {
+    if (!query) return true;
+
+    const title = normalize(recipe.title);
+    const search = normalize(query);
+
+    return title.includes(search);
+  });
   return (
     <div>
       <Box
@@ -51,10 +59,10 @@ export default function RecipdesDashboard({ recipes }) {
           justifyContent: "center",
         }}
       >
-        {sortedRecipesFiltred.length === 0 ? (
+        {sortedRecipesFiltered.length === 0 ? (
           <EmptyRecipeFiltre query={query} />
         ) : (
-          sortedRecipesFiltred.map((recipe, index) => (
+          sortedRecipesFiltered.map((recipe, index) => (
             <Grid key={index} sx={{ maxWidth: "240px" }}>
               <CardRecipe recipe={recipe} />
             </Grid>
