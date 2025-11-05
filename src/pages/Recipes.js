@@ -5,10 +5,16 @@ import RecipdesDashboard from "components/RecipesDashboard";
 import EmptyRecipe from "components/EmptyRecipe";
 import { getRecipes } from "features/user/usersSlice";
 import LoadingSpinner from "components/LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 function Recipe() {
   const { recipes, loading } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleEdit = (id) => {
+    navigate(`/updateRecipe/${id}`);
+  };
 
   useEffect(() => {
     dispatch(getRecipes());
@@ -20,7 +26,7 @@ function Recipe() {
       {loading ? (
         <LoadingSpinner />
       ) : recipes.length > 0 ? (
-        <RecipdesDashboard recipes={recipes} />
+        <RecipdesDashboard recipes={recipes} edit={handleEdit} />
       ) : (
         <EmptyRecipe />
       )}

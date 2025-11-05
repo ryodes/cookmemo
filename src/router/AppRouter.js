@@ -4,6 +4,7 @@ import Home from "pages/Home";
 import About from "pages/About";
 import Recipes from "pages/Recipes";
 import NewRecipes from "pages/NewRecipes";
+import UpdateRecipes from "pages/UpdateRecipes";
 import Login from "pages/Login";
 import Page404 from "pages/Page404";
 import ProtectedRoute from "router/ProtectedRoute";
@@ -33,6 +34,14 @@ export default function AppRouter() {
               element={
                 <ProtectedRoute>
                   <NewRecipes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/updateRecipe/:id"
+              element={
+                <ProtectedRoute>
+                  <UpdateRecipes />
                 </ProtectedRoute>
               }
             />

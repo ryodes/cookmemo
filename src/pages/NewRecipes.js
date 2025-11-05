@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { getUsers } from "features/user/usersSlice";
 import RecipeForm from "forms/RecipeForm";
 
-function Home() {
+function NewRecipe() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,4 +17,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default NewRecipe;

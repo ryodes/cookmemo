@@ -1,20 +1,34 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Slider } from "@mui/material";
 import InputIngredient from "components/InputIngredient";
 import ImageListComponent from "components/ImageListComponent";
-import { postRecipe } from "features/user/usersSlice";
+import { putRecipe } from "features/user/usersSlice";
 import { enqueueSnackbar } from "notistack";
+import LoadingSpinner from "components/LoadingSpinner";
 
-export default function DynamicForm() {
+export default function EditRecipeForm({ id }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { recipe, loading } = useSelector((state) => state.user);
+
   const [title, setTitle] = useState("");
   const [imageChoosed, setImageChoosed] = useState(null);
   const [ingredients, setIngredients] = useState([""]);
   const [nbPart, setNbPart] = useState(4);
   const [steps, setSteps] = useState([]);
-  const navigate = useNavigate();
+
+  // Pré-remplir le formulaire quand la recette arrive
+  useEffect(() => {
+    if (!recipe) return;
+    setTitle(recipe.title);
+    setImageChoosed(recipe.image);
+    setIngredients(recipe.ingredients);
+    setSteps(recipe.steps);
+    setNbPart(recipe.nb_part);
+  }, [recipe]);
 
   const addIngredient = () => {
     setIngredients([...ingredients, ""]);
@@ -46,33 +60,35 @@ export default function DynamicForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const filteredIngredients = ingredients.filter((el) => el !== "");
-    const filteredSteps = steps.filter((el) => el !== "");
+
+    const filteredIngredients = ingredients.filter((el) => el.trim() !== "");
+    const filteredSteps = steps.filter((el) => el.trim() !== "");
+
     if (!title || !filteredIngredients.length || !imageChoosed) {
       enqueueSnackbar("Certains champs sont vides.", { variant: "error" });
       return;
     }
+
     dispatch(
-      postRecipe(
+      putRecipe({
+        id,
         title,
-        filteredIngredients,
-        filteredSteps,
-        imageChoosed,
-        nbPart
-      )
+        ingredients: filteredIngredients,
+        steps: filteredSteps,
+        image: imageChoosed,
+        nbPart,
+      })
     );
-    enqueueSnackbar("Recette créée.", {
-      autoHideDuration: 3000,
+
+    enqueueSnackbar("Recette mise à jour", {
       variant: "success",
-      anchorOrigin: { horizontal: "right", vertical: "top" },
+      autoHideDuration: 3000,
     });
-    setTitle("");
-    setImageChoosed(null);
-    setIngredients([""]);
-    setNbPart(4);
-    setSteps([]);
-    navigate("/recipes");
+
+    navigate(`/recipes`);
   };
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <form
@@ -182,12 +198,11 @@ export default function DynamicForm() {
         imageChoosed={imageChoosed}
         setImageChoosed={setImageChoosed}
       />
-
       <button
         type="submit"
-        className="bg-green-600 text-white py-2 px-4 rounded-xl hover:bg-green-700 transition"
+        className="bg-orange-500 text-white py-2 px-4 rounded-xl hover:bg-orange-600 transition"
       >
-        En cuisine
+        Enregistrer les modifications
       </button>
     </form>
   );

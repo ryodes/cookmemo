@@ -4,6 +4,7 @@ import { enqueueSnackbar } from "notistack";
 
 const initialState = {
   user: null,
+  recipe: null,
   recipes: [],
   loading: false,
   error: null,
@@ -25,8 +26,22 @@ const usersSlice = createSlice({
       state.recipes = action.payload;
       state.loading = false;
     },
+    getOneRecipeSuccess: (state, action) => {
+      state.recipe = action.payload;
+      state.loading = false;
+    },
     postRecipeSuccess: (state, action) => {
       state.recipes.push(action.payload);
+      state.loading = false;
+    },
+    putRecipeSuccess: (state, action) => {
+      const updatedRecipe = action.payload;
+      const index = state.recipes.findIndex((r) => r.id === updatedRecipe.id);
+
+      if (index !== -1) {
+        state.recipes[index] = updatedRecipe; // remplace l’élément
+      }
+
       state.loading = false;
     },
     getError: (state, action) => {
@@ -55,6 +70,8 @@ export const {
   getLoadingStart,
   getRecipesSuccess,
   postRecipeSuccess,
+  putRecipeSuccess,
+  getOneRecipeSuccess,
   getUserSuccess,
   getError,
 } = usersSlice.actions;
@@ -143,6 +160,7 @@ export const getRecipes = () => async (dispatch) => {
 
 export const postRecipe =
   (title, ingredients, steps, imageChoosed, nbPart) => async (dispatch) => {
+    dispatch(getLoadingStart());
     try {
       const token = localStorage.getItem("token");
       const response = await api.post(
@@ -160,6 +178,59 @@ export const postRecipe =
       return response.data;
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
+      enqueueSnackbar("Erreur lors de l'ajout.", {
+        autoHideDuration: 3000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
+    }
+  };
+
+export const getOneRecipe = (id) => async (dispatch) => {
+  dispatch(getLoadingStart());
+  try {
+    const token = localStorage.getItem("token");
+    const response = await api.get(`/recipes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(getOneRecipeSuccess(response.data));
+    return response.data;
+  } catch (error) {
+    if (error.status === 404 || error.status === 403) {
+      enqueueSnackbar("La recette ne peut pas être récupéré", {
+        autoHideDuration: 3000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
+      return;
+    }
+    dispatch(
+      getError(error.message || "Erreur lors du chargement des recettes")
+    );
+  }
+};
+
+export const putRecipe =
+  ({ id, title, ingredients, steps, imageChoosed, nbPart }) =>
+  async (dispatch) => {
+    dispatch(getLoadingStart());
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.put(
+        `/recipes/${id}`,
+        { title, ingredients, steps, image: imageChoosed, nb_part: nbPart },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch(putRecipeSuccess(response.data.recipe));
+      return response.data;
+    } catch (error) {
       enqueueSnackbar("Erreur lors de l'ajout.", {
         autoHideDuration: 3000,
         variant: "error",

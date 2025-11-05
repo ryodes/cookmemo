@@ -11,7 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CallMissedOutgoingIcon from "@mui/icons-material/CallMissedOutgoing";
+import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
+import ModeIcon from "@mui/icons-material/Mode";
 import { colorBadge, formatMailBadge } from "utils";
 import { Tooltip } from "@mui/material";
 import { openModal } from "features/recipes/recipesSlice";
@@ -41,7 +42,7 @@ const ExpandMore = styled((props) => {
   ],
 }));
 
-export default function CardRecipe({ recipe }) {
+export default function CardRecipe({ recipe, edit }) {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
   const { title, ingredients, steps, author_email, image, created_at } = recipe;
@@ -68,14 +69,28 @@ export default function CardRecipe({ recipe }) {
           </Avatar>
         }
         action={
-          <Tooltip title="Démarrer">
-            <IconButton
-              aria-label="settings"
-              onClick={() => dispatch(openModal({ steps, ingredients, title }))}
-            >
-              <CallMissedOutgoingIcon />
-            </IconButton>
-          </Tooltip>
+          <span>
+            <Tooltip title="Démarrer">
+              <IconButton
+                aria-label="settings"
+                onClick={() =>
+                  dispatch(openModal({ steps, ingredients, title }))
+                }
+              >
+                <OpenInBrowserIcon />
+              </IconButton>
+            </Tooltip>
+            {edit && (
+              <Tooltip title="Modifier">
+                <IconButton
+                  aria-label="settings"
+                  onClick={() => edit(recipe.id)}
+                >
+                  <ModeIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </span>
         }
         title={title}
         subheader={formattedDate}

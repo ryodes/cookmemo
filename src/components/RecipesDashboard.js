@@ -6,7 +6,7 @@ import CardRecipe from "components/CardRecipe";
 import Searchbar from "components/Searchbar";
 import EmptyRecipeFiltre from "components/EmptyRecipeFiltre";
 
-export default function RecipdesDashboard({ recipes }) {
+export default function RecipdesDashboard({ recipes, edit }) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
@@ -64,7 +64,7 @@ export default function RecipdesDashboard({ recipes }) {
         ) : (
           sortedRecipesFiltered.map((recipe, index) => (
             <Grid key={index} sx={{ maxWidth: "240px" }}>
-              <CardRecipe recipe={recipe} />
+              <CardRecipe recipe={recipe} edit={edit} />
             </Grid>
           ))
         )}
