@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "components/Navbar";
 import Home from "pages/Home";
-import About from "pages/About";
+import RecipeContent from "pages/RecipeContent";
 import Recipes from "pages/Recipes";
 import NewRecipes from "pages/NewRecipes";
 import UpdateRecipes from "pages/UpdateRecipes";
@@ -20,7 +20,7 @@ export default function AppRouter() {
           <RecipeDemo />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/recipe/:id" element={<RecipeContent />} />
             <Route
               path="/recipes"
               element={

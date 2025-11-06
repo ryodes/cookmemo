@@ -213,14 +213,14 @@ export const getOneRecipe = (id) => async (dispatch) => {
 };
 
 export const putRecipe =
-  ({ id, title, ingredients, steps, imageChoosed, nbPart }) =>
+  ({ id, title, ingredients, steps, image, nbPart }) =>
   async (dispatch) => {
     dispatch(getLoadingStart());
     try {
       const token = localStorage.getItem("token");
       const response = await api.put(
         `/recipes/${id}`,
-        { title, ingredients, steps, image: imageChoosed, nb_part: nbPart },
+        { title, ingredients, steps, image, nb_part: nbPart },
         {
           headers: {
             Authorization: `Bearer ${token}`,

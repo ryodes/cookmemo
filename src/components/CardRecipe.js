@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -16,7 +18,6 @@ import ModeIcon from "@mui/icons-material/Mode";
 import { colorBadge, formatMailBadge } from "utils";
 import { Tooltip } from "@mui/material";
 import { openModal } from "features/recipes/recipesSlice";
-import { useDispatch } from "react-redux";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -44,6 +45,7 @@ const ExpandMore = styled((props) => {
 
 export default function CardRecipe({ recipe, edit }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState(false);
   const { title, ingredients, steps, author_email, image, created_at } = recipe;
 
@@ -97,6 +99,7 @@ export default function CardRecipe({ recipe, edit }) {
         sx={{ maxHeight: "73px" }}
       />
       <CardMedia
+        onClick={() => navigate(`/recipe/${recipe.id}`)}
         component="img"
         image={image}
         alt={title}

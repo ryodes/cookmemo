@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getOneRecipe } from "features/user/usersSlice";
 import { useParams } from "react-router-dom";
-import RecipeFormEdit from "forms/RecipeFormEdit";
+import ContentSection from "components/ContentSection";
 
-function UpdateRecipe() {
+function RecipeContent() {
   const dispatch = useDispatch();
 
   const { id } = useParams(); // id dans l'URL ex: /recipes/edit/123
@@ -15,10 +15,9 @@ function UpdateRecipe() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold">Modifier la recette</h1>
-      <RecipeFormEdit id={id} />
+      <ContentSection id={id} />
     </div>
   );
 }
 
-export default UpdateRecipe;
+export default RecipeContent;
