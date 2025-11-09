@@ -90,9 +90,13 @@ export default function StepByStepModal() {
             <h2 className="text-2xl font-semibold mb-2">
               Étape {currentStep + 1} sur {steps.length}
             </h2>
-            <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto max-w-[80%]">
-              {steps[currentStep]}
-            </p>
+            <div className="relative max-h-52 overflow-y-auto p-4">
+              <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto max-w-[80%]">
+                {steps[currentStep]}
+              </p>
+              <div className="sticky bottom-[-15px] left-0 w-full h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            </div>
+
             <u className="text-gray-400 mt-3">Ingredients:</u>
             <ul>
               {ingredients.map((ingredient, index) => (
