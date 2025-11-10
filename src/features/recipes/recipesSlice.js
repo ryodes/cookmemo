@@ -8,6 +8,7 @@ const initialState = {
   steps: [],
   ingredients: [],
   title: "",
+  nbPart: 1,
   loading: false,
   error: null,
 };
@@ -18,10 +19,11 @@ const recipesSlice = createSlice({
   reducers: {
     openModal: (state, action) => {
       state.open = true;
-      const { steps, ingredients, title } = action.payload;
+      const { steps, ingredients, title, nbPart } = action.payload;
       state.steps = steps;
       state.ingredients = ingredients;
       state.title = title;
+      state.nbPart = nbPart;
     },
     closeModal: (state) => {
       state.open = false;

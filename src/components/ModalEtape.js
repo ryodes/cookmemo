@@ -1,18 +1,32 @@
-import React, { useState } from "react";
-import { IconButton, Dialog, LinearProgress, Button } from "@mui/material";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { IconButton, Dialog, LinearProgress, Button, Box } from "@mui/material";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { adjustIngredientQuantity } from "utils";
 import { closeModal } from "features/recipes/recipesSlice";
 import { motion, AnimatePresence } from "framer-motion";
+import NbPartInline from "components/NbPartLine";
 
 export default function StepByStepModal() {
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState("next");
   const dispatch = useDispatch();
+  const [ratio, setRatio] = useState(1);
 
-  const { open, steps, ingredients, title } = useSelector(
+  const { open, steps, ingredients, title, nbPart } = useSelector(
     (state) => state.recipes
   );
+
+  const [nbPartModifier, setNbPartModifier] = useState(4);
+
+  useEffect(() => {
+    setNbPartModifier(nbPart);
+  }, [nbPart]);
+
+  useEffect(() => {
+    // il faut Math.round les ingrédients mais pas les recettes
+    setRatio(nbPartModifier / nbPart);
+  }, [nbPartModifier, nbPart]);
 
   if (!steps.length) return null;
 
@@ -57,11 +71,14 @@ export default function StepByStepModal() {
       maxWidth={false}
       PaperProps={{
         className:
-          "w-[90%] h-[90vh] mx-auto rounded-2xl bg-white shadow-lg flex flex-col justify-between p-6 relative overflow-hidden",
+          "w-[90%] h-[90vh] mx-auto rounded-2xl bg-white shadow-lg flex flex-col justify-between px-6 relative overflow-hidden",
       }}
     >
-      <div className="absolute top-0 w-[90%]">
-        <h1 className="text-xl font-semibold mb-2">{title}</h1>
+      <div className="w-[93%] z-20">
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <h1 className="text-xl font-semibold my-auto capitalize">{title}</h1>
+          <NbPartInline value={nbPartModifier} onChange={setNbPartModifier} />
+        </Box>
         <LinearProgress
           variant="determinate"
           value={progress}
@@ -101,7 +118,7 @@ export default function StepByStepModal() {
             <ul>
               {ingredients.map((ingredient, index) => (
                 <li key={index} className="text-gray-400">
-                  {ingredient}
+                  {adjustIngredientQuantity(ingredient, ratio)}
                 </li>
               ))}
             </ul>
@@ -120,7 +137,7 @@ export default function StepByStepModal() {
             position: { sm: "absolute", xs: "relative" },
             left: "5px",
             height: "80%",
-            top: "10%",
+            top: "15%",
           }}
         >
           ⬅️
@@ -138,7 +155,7 @@ export default function StepByStepModal() {
               position: { sm: "absolute", xs: "relative" },
               right: "5px",
               height: "80%",
-              top: "10%",
+              top: "15%",
             }}
           >
             ➡️
@@ -154,7 +171,7 @@ export default function StepByStepModal() {
               position: { sm: "absolute", xs: "relative" },
               right: "5px",
               height: "80%",
-              top: "10%",
+              top: "15%",
             }}
           >
             ✅

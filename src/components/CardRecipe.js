@@ -48,19 +48,16 @@ export default function CardRecipe({ recipe, edit }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState(false);
   const { title, ingredients, steps, author_email, image, created_at } = recipe;
+  const nbPart = recipe.nb_part;
 
-  const formattedDate = new Date(created_at).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const formattedDate = new Date(created_at).toLocaleDateString("fr-FR");
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ minHeight: 200 }}>
+    <Card sx={{ minHeight: 200, minWidth: 230 }}>
       <CardHeader
         avatar={
           <Avatar
@@ -76,7 +73,7 @@ export default function CardRecipe({ recipe, edit }) {
               <IconButton
                 aria-label="settings"
                 onClick={() =>
-                  dispatch(openModal({ steps, ingredients, title }))
+                  dispatch(openModal({ steps, ingredients, title, nbPart }))
                 }
               >
                 <OpenInBrowserIcon />
@@ -96,7 +93,7 @@ export default function CardRecipe({ recipe, edit }) {
         }
         title={title}
         subheader={formattedDate}
-        sx={{ maxHeight: "73px" }}
+        sx={{ maxHeight: "73px", textTransform: "capitalize" }}
       />
       <CardMedia
         onClick={() => navigate(`/recipe/${recipe.id}`)}

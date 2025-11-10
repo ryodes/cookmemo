@@ -23,7 +23,7 @@ export default function ContentSection() {
                 {nb_part > 1 ? "s" : ""}
               </p>
 
-              <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl capitalize">
                 {title}
               </h1>
 
