@@ -15,12 +15,10 @@ import { enqueueSnackbar } from "notistack";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, signUp } = useAuth();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSignIn = async () => {
     if (!emailRegex.test(email)) {
       enqueueSnackbar("Veuillez entrer une adresse email valide.", {
         autoHideDuration: 3000,
@@ -31,6 +29,19 @@ export default function Login() {
     }
 
     await login(email, password);
+  };
+
+  const handleSignUp = async () => {
+    if (!emailRegex.test(email)) {
+      enqueueSnackbar("Veuillez entrer une adresse email valide.", {
+        autoHideDuration: 3000,
+        variant: "warning",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
+      return;
+    }
+
+    await signUp(email, password);
   };
 
   return (
@@ -51,10 +62,10 @@ export default function Login() {
           </Typography>
           <Typography component="p" variant="p">
             <b>Connectez-vous</b> ou <b>créez un compte</b> en un{" "}
-            <b>seul geste</b> : il suffit de renseigner votre e-mail et un
-            mot de passe, et nous nous occupons du reste !
+            <b>seul geste</b> : il suffit de renseigner votre e-mail et un mot
+            de passe, et nous nous occupons du reste !
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+          <Box component="form" sx={{ mt: 2 }}>
             <TextField
               margin="normal"
               required
@@ -86,12 +97,22 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button
-              type="submit"
+              onClick={() => handleSignIn()}
               fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              variant="outlined"
+              sx={{ mt: 1, mb: 1 }}
+              disabled={!email || !password}
             >
               Se connecter
+            </Button>
+            <Button
+              onClick={() => handleSignUp()}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 1, mb: 1 }}
+              disabled={!email || !password}
+            >
+              S'inscrire
             </Button>
           </Box>
         </Box>

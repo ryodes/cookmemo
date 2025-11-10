@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { postUsers } from "features/user/usersSlice";
+import { loginUser, registerUser } from "features/user/usersSlice";
 import { setAccessToken } from "app/api";
 
 let logoutCallback = null;
@@ -27,7 +27,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const res = await dispatch(postUsers(email, password));
+    const res = await dispatch(loginUser(email, password));
+    if (res?.access_token) {
+      const decoded = jwtDecode(res.access_token);
+      setUser({ email: decoded.sub, id: decoded.csrf });
+    }
+  };
+
+  const signUp = async (email, password) => {
+    const res = await dispatch(registerUser(email, password));
     if (res?.access_token) {
       const decoded = jwtDecode(res.access_token);
       setUser({ email: decoded.sub, id: decoded.csrf });
@@ -45,7 +53,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, signUp, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -90,38 +90,31 @@ export const getUsers = () => async (dispatch) => {
   }
 };
 
-export const postUsers = (email, password) => async (dispatch) => {
+export const loginUser = (email, password) => async (dispatch) => {
   dispatch(getLoadingStart());
   try {
     const response = await api.post("/auth/login", { email, password });
 
-    if (response.status === 200) {
-      enqueueSnackbar("Connexion réussie !", {
-        autoHideDuration: 3000,
-        variant: "success",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
-      });
-    } else if (response.status === 201) {
-      enqueueSnackbar("Utilisateur créé avec succès !", {
-        autoHideDuration: 3000,
-        variant: "success",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
-      });
-    }
+    enqueueSnackbar("Connexion réussie !", {
+      autoHideDuration: 3000,
+      variant: "success",
+      anchorOrigin: { horizontal: "right", vertical: "top" },
+    });
+
     setAccessToken(response.data.access_token);
     localStorage.setItem("token", response.data.access_token);
     dispatch(getUserSuccess(response.data));
     return response.data;
   } catch (error) {
     if (error.response?.status === 401) {
-      enqueueSnackbar("Mot de passe incorrect.", {
+      enqueueSnackbar("Identifiants incorrects.", {
         autoHideDuration: 3000,
         variant: "warning",
         anchorOrigin: { horizontal: "right", vertical: "top" },
       });
     } else {
       enqueueSnackbar(
-        "Une erreur est survenu, veuillez réessayer ultérieurement.",
+        "Une erreur est survenue, veuillez réessayer ultérieurement.",
         {
           autoHideDuration: 3000,
           variant: "error",
@@ -131,11 +124,45 @@ export const postUsers = (email, password) => async (dispatch) => {
     }
     console.error("Erreur lors du login:", error);
     dispatch(
-      getError(
-        error.message ||
-          "Erreur lors du chargement de la tentative de connexion"
-      )
+      getError(error.message || "Erreur lors de la tentative de connexion")
     );
+  }
+};
+
+// --- SIGNUP ---
+export const registerUser = (email, password) => async (dispatch) => {
+  dispatch(getLoadingStart());
+  try {
+    const response = await api.post("/auth/register", { email, password });
+
+    enqueueSnackbar("Utilisateur créé avec succès !", {
+      autoHideDuration: 3000,
+      variant: "success",
+      anchorOrigin: { horizontal: "right", vertical: "top" },
+    });
+
+    setAccessToken(response.data.access_token);
+    localStorage.setItem("token", response.data.access_token);
+    dispatch(getUserSuccess(response.data));
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 409) {
+      enqueueSnackbar("Cet utilisateur existe déjà.", {
+        autoHideDuration: 3000,
+        variant: "warning",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+      });
+    } else {
+      enqueueSnackbar(
+        "Une erreur est survenue, veuillez réessayer ultérieurement.",
+        {
+          autoHideDuration: 3000,
+          variant: "error",
+          anchorOrigin: { horizontal: "right", vertical: "top" },
+        }
+      );
+    }
+    dispatch(getError(error.message || "Erreur lors de l'inscription"));
   }
 };
 
