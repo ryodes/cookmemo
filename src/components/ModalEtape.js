@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import NbPartInline from "components/NbPartLine";
 
 export default function StepByStepModal() {
+  const [touchStartX, setTouchStartX] = useState(0);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState("next");
   const dispatch = useDispatch();
@@ -24,7 +26,6 @@ export default function StepByStepModal() {
   }, [nbPart]);
 
   useEffect(() => {
-    // il faut Math.round les ingrédients mais pas les recettes
     setRatio(nbPartModifier / nbPart);
   }, [nbPartModifier, nbPart]);
 
@@ -47,6 +48,20 @@ export default function StepByStepModal() {
     setCurrentStep((prev) => {
       return Math.max(prev - 1, 0);
     });
+  };
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches ? e.touches[0].clientX : e.clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const diff = touchStartX - endX;
+
+    if (Math.abs(diff) > 60) {
+      if (diff > 0) nextStep();
+      else prevStep();
+    }
   };
 
   const progress = ((currentStep + 1) / steps.length) * 100;
@@ -92,7 +107,13 @@ export default function StepByStepModal() {
         </IconButton>
       </div>
 
-      <div className="flex flex-col items-center justify-center flex-grow text-center px-8 relative overflow-hidden">
+      <div
+        className="flex flex-col items-center justify-center flex-grow text-center px-8 relative overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleTouchStart}
+        onMouseUp={handleTouchEnd}
+      >
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={currentStep}
