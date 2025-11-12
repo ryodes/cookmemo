@@ -47,8 +47,7 @@ export default function CardRecipe({ recipe, edit }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState(false);
-  const { title, ingredients, steps, author_email, image, created_at } = recipe;
-  const nbPart = recipe.nb_part;
+  const { title, ingredients, steps, author_email, image, created_at, nb_part } = recipe;
 
   const formattedDate = new Date(created_at).toLocaleDateString("fr-FR");
 
@@ -73,7 +72,7 @@ export default function CardRecipe({ recipe, edit }) {
               <IconButton
                 aria-label="settings"
                 onClick={() =>
-                  dispatch(openModal({ steps, ingredients, title, nbPart }))
+                  dispatch(openModal({ steps, ingredients, title, nbPart: nb_part }))
                 }
               >
                 <OpenInBrowserIcon />

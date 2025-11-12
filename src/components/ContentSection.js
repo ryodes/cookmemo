@@ -44,7 +44,11 @@ export default function ContentSection() {
           />
           <button
             className="bg-orange-500 text-white py-2 px-4 rounded-xl hover:bg-orange-600 transition mt-4"
-            onClick={() => dispatch(openModal({ steps, ingredients, title }))}
+            onClick={() =>
+              dispatch(
+                openModal({ steps, ingredients, title, nbPart: nb_part })
+              )
+            }
           >
             Visualiser la recette
           </button>
@@ -55,9 +59,7 @@ export default function ContentSection() {
           <div className="lg:pr-4">
             <div className="max-w-xl text-base/7 text-gray-500 lg:max-w-lg">
               {/* Ingredients */}
-              <h2 className="text-2xl font-bold tracking-tight">
-                Ingrédients
-              </h2>
+              <h2 className="text-2xl font-bold tracking-tight">Ingrédients</h2>
               <ul className="mt-6 space-y-3 list-disc list-inside">
                 {ingredients.map((ing, idx) => (
                   <li key={idx} className="text-gray-500">
