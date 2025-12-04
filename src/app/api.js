@@ -1,6 +1,5 @@
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
-import { triggerLogout } from "context/AuthContext";
 
 // eslint-disable-next-line
 let accessToken = null;
@@ -39,7 +38,8 @@ api.interceptors.response.use(
           anchorOrigin: { horizontal: "right", vertical: "top" },
         });
         console.error("Impossible de rafraîchir le token :", refreshError);
-        triggerLogout();
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       }
     }
     return Promise.reject(error);
