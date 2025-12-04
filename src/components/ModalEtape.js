@@ -144,6 +144,7 @@ export default function StepByStepModal() {
                   </li>
                 ))}
               </ul>
+              <div className="sticky bottom-[-15px] left-0 w-full h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" />
             </div>
           </motion.div>
         </AnimatePresence>
