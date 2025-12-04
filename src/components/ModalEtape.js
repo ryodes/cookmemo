@@ -125,9 +125,9 @@ export default function StepByStepModal() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="absolute w-full"
           >
-            <h2 className="text-2xl font-semibold mb-2">
+            <h3 className="text-2xl font-semibold">
               Étape {currentStep + 1} sur {steps.length}
-            </h2>
+            </h3>
             <div className="relative max-h-52 overflow-y-auto p-4">
               <p className="text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto max-w-[80%]">
                 {steps[currentStep]}
@@ -136,13 +136,15 @@ export default function StepByStepModal() {
             </div>
 
             <u className="text-gray-400 mt-3">Ingredients:</u>
-            <ul>
-              {ingredients.map((ingredient, index) => (
-                <li key={index} className="text-gray-400">
-                  {adjustIngredientQuantity(ingredient, ratio)}
-                </li>
-              ))}
-            </ul>
+            <div className="relative max-h-52 overflow-y-auto p-4">
+              <ul>
+                {ingredients.map((ingredient, index) => (
+                  <li key={index} className="text-gray-400">
+                    {adjustIngredientQuantity(ingredient, ratio)}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
